@@ -1,17 +1,12 @@
 import React, {Component} from 'react';
 import OwnerInfo from './OwnerInfo';
 import Loader from './loader';
+import Search from './search';
 
 class App extends Component {
     state = {
         address: '',
-        loadedData: {
-            "mailingAddress": "11106 S 108TH EAST AVE, BIXBY, OK 74008",
-            "name": "CHRISTENSEN, JUSTIN D ",
-            "lastName": "CHRISTENSEN",
-            "livesThere": true,
-            "phones": [{"name": "Justin Christensen", "houseNumber": "918-698-5838", "isMobile": true}]
-        },
+        loadedData: null,
         isLoading: false
     };
 
@@ -19,8 +14,7 @@ class App extends Component {
         e.preventDefault();
         if (this.state.address && !this.state.isLoading) {
             this.setState({isLoading: true});
-            fetch(`http://localhost:3333/?address=${encodeURIComponent(this.state.address)}`)
-                .then(r => r.json())
+            Search(this.state.address)
                 .then(data => {
                     this.setState({isLoading: false, loadedData: data.error ? null : data});
                     if (data.error) {
@@ -54,14 +48,14 @@ class App extends Component {
                             <p className="help">Search for an address like "<em>12345 W Main St, City Name,
                                 State or
                                 Zip</em>"</p>
-                            <br />
+                            <br/>
                             <button className="button is-success"
                                     disabled={!this.state.address || this.state.isLoading}>Search
                             </button>
                         </form>
                     </div>
                     <div className="column">
-                        {this.state.isLoading ? <Loader /> : (this.state.loadedData &&
+                        {this.state.isLoading ? <Loader/> : (this.state.loadedData &&
                             <OwnerInfo owner={this.state.loadedData}/>)}
                     </div>
                 </div>
