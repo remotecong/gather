@@ -12,7 +12,9 @@
 .homepage__about {
     font-size: 1.25rem;
 }
-
+.homepage__logo {
+    height: 3rem;
+}
 @media (min-width: 1050px) {
     .homepage {
         margin: auto;
@@ -20,5 +22,8 @@
     }
     .homepage__title {
         margin: 0 0 2rem;
+    }
+    .homepage__logo {
+        height: 7rem;
     }
 }

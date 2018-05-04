@@ -5,7 +5,7 @@ import OwnerInfo from "./owner-info";
 
 export default () => (
     <section className="homepage">
-        <h1 className="homepage__title">Gather</h1>
+        <h1 className="homepage__title"><img className="homepage__logo" src="logo.gif" alt="Gather Logo" /> Gather</h1>
         <p className="homepage__about">Reverse address lookup for finding owners and their phone numbers</p>
         <div className="homepage__split-panel">
             <SearchComponent/>
