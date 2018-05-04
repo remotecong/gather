@@ -1,0 +1,24 @@
+.homepage {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    font-size: 16px;
+    padding: 1rem;
+}
+.homepage__title {
+    border-bottom: solid 1rem springgreen;
+    display: inline-block;
+    font-size: 4rem;
+    margin: auto auto .75rem;
+}
+.homepage__about {
+    font-size: 1.25rem;
+}
+
+@media (min-width: 1050px) {
+    .homepage {
+        margin: auto;
+        width: 900px;
+    }
+    .homepage__title {
+        margin: 0 0 2rem;
+    }
+}

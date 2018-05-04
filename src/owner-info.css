@@ -1,0 +1,37 @@
+.owner-info {
+    border-top: solid 1rem blue;
+    margin-top: 2rem;
+    padding-top: 2rem;
+}
+.owner-info__name {
+    font-size: 1.5rem;
+    margin: 0;
+}
+.owner-info__lives-there {
+    align-items: center;
+    display: flex;
+}
+.owner-info__landline-icon,
+.owner-info__mobile-icon {
+    height: 1.5rem;
+    margin-right: 1rem;
+}
+.owner-info__phone-number {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+@media (min-width: 1050px) {
+    .owner-info__name {
+        font-size: 2rem;
+    }
+    .owner-info__landline-icon,
+    .owner-info__mobile-icon {
+        height: 3rem;
+        margin-right: 2rem;
+    }
+    .owner-info__phone-number {
+        font-size: 3rem;
+    }
+}
