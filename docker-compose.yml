@@ -1,0 +1,7 @@
+version: '2'
+
+services:
+  ui:
+    build: .
+    ports:
+      - 7703:5000
