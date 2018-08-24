@@ -4,7 +4,7 @@ WORKDIR /code/
 COPY package*.json ./
 RUN npm i > /dev/null
 COPY . .
-ARG REACT_APP_API_URL=https://gather-api-hku.herokuapp.com/
+ENV REACT_APP_API_URL=https://gather-api.dillonchristensen.com/
 RUN npm run build --production
 CMD serve -s build
 EXPOSE 5000
