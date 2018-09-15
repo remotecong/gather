@@ -1,0 +1,8 @@
+FROM mhart/alpine-node:10.7.0 AS build
+WORKDIR /code/
+COPY package*.json ./
+RUN npm i > /dev/null
+COPY . .
+CMD npm start
+EXPOSE 3000
+
