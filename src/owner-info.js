@@ -11,7 +11,7 @@ const renderLivesThere = livesThere => (
     </p>
 );
 
-const renderPhoneNumber = (p, showName) => console.log(p) || (
+const renderPhoneNumber = (p, showName) => (
     <p className="owner-info__phone-number" key={p.number}>
         {p.isMobile ? renderMobileIcon() : renderLandlineIcon()}
         {!!showName && `${p.name} - `}{p.number}
