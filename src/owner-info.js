@@ -29,6 +29,7 @@ const OwnerInfo = ({owner, isLoading}) => isLoading ? <Loader/> : !!owner && (
         {renderLivesThere(owner.livesThere)}
         {!owner.phones.length && <p className="owner-info__phone-number">No numbers found for address</p>}
         {owner.phones.sort((a, b) => a.isMobile - b.isMobile).map((p, i, a) => renderPhoneNumber(p, i, a.length, !owner.livesThere))}
+        <p className="thatsthem-url"><a href={owner.thatsThemUrl} target="_blank">Open ThatsThem Page</a></p>
     </div>
 );
 

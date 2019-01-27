@@ -20,6 +20,13 @@
     font-size: 1.5rem;
     font-weight: bold;
 }
+.thatsthem-url a:hover {
+    color: springgreen;
+}
+.thatsthem-url a:link,
+.thatsthem-url a:visited {
+    color: blue;
+}
 @media (min-width: 1050px) {
     .owner-info__name {
         font-size: 2rem;
