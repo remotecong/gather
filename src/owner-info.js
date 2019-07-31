@@ -25,7 +25,7 @@ const renderMobileIcon = () => (<svg xmlns="http://www.w3.org/2000/svg" classNam
 
 const OwnerInfo = ({owner, isLoading}) => isLoading ? <Loader/> : !!owner && (
     <div className="owner-info">
-        <p className="owner-info__name">{owner.name}</p>
+        <p className="owner-info__name" title={owner.rawName}>{owner.name}</p>
         {renderLivesThere(owner.livesThere)}
         {!owner.phones.length && <p className="owner-info__phone-number">No numbers found for address</p>}
         {owner.phones.sort((a, b) => a.isMobile - b.isMobile).map((p, i, a) => renderPhoneNumber(p, i, a.length, !owner.livesThere))}
