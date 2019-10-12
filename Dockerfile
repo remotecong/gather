@@ -1,10 +1,9 @@
-FROM mhart/alpine-node:10.7.0
-RUN npm i -g serve > /dev/null
+FROM node:12.11.1-stretch-slim
+RUN yarn global add nodemon
 WORKDIR /code/
-COPY package*.json ./
-RUN npm i > /dev/null
+COPY package.json yarn.lock ./
+RUN yarn
 COPY . .
-ENV REACT_APP_API_URL=https://gather-api.dillonchristensen.com/
-RUN npm run build --production
+RUN yarn build --production
 CMD serve -s build
 EXPOSE 5000

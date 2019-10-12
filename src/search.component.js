@@ -1,6 +1,8 @@
 import React from 'react';
 import Search from './search';
 import {connect} from 'react-redux';
+import ReactGA from 'react-ga';
+import * as Sentry from '@sentry/browser';
 import './search.component.css';
 
 class SearchComponent extends React.Component {
@@ -12,14 +14,33 @@ class SearchComponent extends React.Component {
         e.preventDefault();
         if (this.state.address && !this.props.isLoading) {
             this.props.loadStarted();
+            const loadStartTime = new Date().getTime();
+            Sentry.configureScope(scope => {
+                scope.setTag('query', this.state.address);
+            });
             Search(this.state.address)
                 .then(data => {
                     if (!data.error) {
+                        ReactGA.timing({
+                            category: 'search',
+                            variable: 'loadResults',
+                            value: (new Date().getTime() - loadStartTime) / 1000,
+                            label: this.state.address
+                        });
                         return this.props.loadFinished(data);
                     }
                     throw new Error(data.error);
                 })
                 .catch(err => {
+                    const loadTime = (new Date().getTime() - loadStartTime) / 1000;
+                    ReactGA.timing({
+                        category: 'search',
+                        variable: 'fatalException',
+                        value: loadTime,
+                        label: this.state.address
+                    });
+                    err.loadTime = loadTime;
+                    Sentry.captureException(err);
                     alert(err.message);
                     this.props.loadFailed();
                 });
@@ -31,8 +52,8 @@ class SearchComponent extends React.Component {
     render = () => (
         <form className="search" onSubmit={this.runSearch}>
             <input id="search__input" value={this.state.address} onChange={this.captureAddress}
-                   className="search__input"
-                   type="text" placeholder="Street, City, State and/or Zip"/>
+                className="search__input"
+                type="text" placeholder="Street, City, State and/or Zip"/>
             <button className="search__button" disabled={!this.state.address || this.props.isLoading}>Search</button>
         </form>
     );
