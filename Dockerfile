@@ -1,5 +1,5 @@
 FROM node:12.11.1-stretch-slim
-RUN yarn global add nodemon
+RUN yarn global add serve
 WORKDIR /code/
 COPY package.json yarn.lock ./
 RUN yarn
