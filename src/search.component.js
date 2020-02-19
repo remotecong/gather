@@ -1,8 +1,8 @@
 import React from 'react';
 import Search from './search';
 import {connect} from 'react-redux';
-import ReactGA from 'react-ga';
 import * as Sentry from '@sentry/browser';
+import {timedEvent} from './logger.js';
 import './search.component.css';
 
 class SearchComponent extends React.Component {
@@ -14,33 +14,22 @@ class SearchComponent extends React.Component {
         e.preventDefault();
         if (this.state.address && !this.props.isLoading) {
             this.props.loadStarted();
-            const loadStartTime = new Date().getTime();
-            Sentry.configureScope(scope => {
-                scope.setTag('query', this.state.address);
-            });
+            const finish = timedEvent('Search', this.state.address);
             Search(this.state.address)
                 .then(data => {
+                    finish();
                     if (!data.error) {
-                        ReactGA.timing({
-                            category: 'search',
-                            variable: 'loadResults',
-                            value: (new Date().getTime() - loadStartTime) / 1000,
-                            label: this.state.address
-                        });
                         return this.props.loadFinished(data);
                     }
                     throw new Error(data.error);
                 })
                 .catch(err => {
-                    const loadTime = (new Date().getTime() - loadStartTime) / 1000;
-                    ReactGA.timing({
-                        category: 'search',
-                        variable: 'fatalException',
-                        value: loadTime,
-                        label: this.state.address
+                    //  capture wait time for error
+                    err.loadTime = finish();
+                    Sentry.withScope(scope => {
+                        scope.setTag('query', this.state.address);
+                        Sentry.captureException(err);
                     });
-                    err.loadTime = loadTime;
-                    Sentry.captureException(err);
                     alert(err.message);
                     this.props.loadFailed();
                 });
