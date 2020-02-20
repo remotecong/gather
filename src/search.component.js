@@ -8,7 +8,7 @@ import { timedEvent } from './logger.js';
 const styles = {
     button: css(
         {
-            '-webkit-appearance': 'none',
+            'WebkitAppearance': 'none',
             background: 'springgreen',
             border: 'none',
             borderRadius: 10,
@@ -25,7 +25,7 @@ const styles = {
     ),
     input: css(
         {
-            '-webkit-appearance': 'none',
+            'WebkitAppearance': 'none',
             borderColor: '#dbdbdb',
             borderRadius: 4,
             boxShadow: 'inset 0 1px 2px rgba(10,10,10,.1)',
