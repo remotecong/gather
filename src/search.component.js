@@ -5,45 +5,69 @@ import * as Sentry from '@sentry/browser';
 import {timedEvent} from './logger.js';
 import './search.component.css';
 
-class SearchComponent extends React.Component {
-    state = {
-        address: ''
-    };
+export const SearchComponent = ({
+    isLoading,
+    loadStarted,
+    loadFinished,
+    loadFailed,
+}) => {
+    const [addr, setAddr] = React.useState('');
+    const inputEl = React.useRef(null);
 
-    runSearch = e => {
+    React.useEffect(() => {
+        const onPaste = (e) => {
+            try {
+                const data = e.clipboardData.getData('text');
+                setAddr(data);
+                querySearch(data);
+            } catch (ignore) {
+                console.warn('Browser failed to capture paste data', ignore);
+            }
+        };
+
+        document.addEventListener('paste', onPaste);
+
+        return () => document.removeEventListener('paste', onPaste);
+    }, []);
+
+    const onSearch = e => {
         e.preventDefault();
-        if (this.state.address && !this.props.isLoading) {
-            this.props.loadStarted();
-            const finish = timedEvent('Search', this.state.address);
-            Search(this.state.address)
-                .then(data => {
-                    finish();
-                    if (!data.error) {
-                        return this.props.loadFinished(data);
-                    }
-                    throw new Error(data.error);
-                })
-                .catch(err => {
-                    //  capture wait time for error
-                    err.loadTime = finish();
-                    Sentry.withScope(scope => {
-                        scope.setTag('query', this.state.address);
-                        Sentry.captureException(err);
-                    });
-                    alert(err.message);
-                    this.props.loadFailed();
-                });
+        if (addr && !isLoading) {
+            querySearch(addr);
         }
     };
 
-    captureAddress = ({currentTarget}) => this.setState({address: currentTarget.value});
+    const querySearch = (addr) => {
+        loadStarted();
+        const finish = timedEvent('Search', addr);
+        Search(addr)
+            .then(data => {
+                finish();
+                if (!data.error) {
+                    return loadFinished(data);
+                }
+                throw new Error(data.error);
+            })
+            .catch(err => {
+                //  capture wait time for error
+                err.loadTime = finish();
+                Sentry.withScope(scope => {
+                    scope.setTag('query', addr);
+                    Sentry.captureException(err);
+                });
+                alert(err.message);
+                loadFailed();
+            });
+    }
 
-    render = () => (
-        <form className="search" onSubmit={this.runSearch}>
-            <input id="search__input" value={this.state.address} onChange={this.captureAddress}
+    const captureAddress = ({currentTarget}) => setAddr(currentTarget.value);
+
+    return (
+        <form className="search" onSubmit={onSearch}>
+            <input ref={inputEl} id="search__input" value={addr} onChange={captureAddress}
                 className="search__input"
                 type="text" placeholder="Street, City, State and/or Zip"/>
-            <button className="search__button" disabled={!this.state.address || this.props.isLoading}>Search</button>
+            <button className="search__button" disabled={!addr|| isLoading}>Search</button>
         </form>
     );
 }
