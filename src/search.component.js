@@ -12,7 +12,6 @@ export const SearchComponent = ({
     loadFailed,
 }) => {
     const [addr, setAddr] = React.useState('');
-    const inputEl = React.useRef(null);
 
     React.useEffect(() => {
         const onPaste = (e) => {
@@ -64,7 +63,7 @@ export const SearchComponent = ({
 
     return (
         <form className="search" onSubmit={onSearch}>
-            <input ref={inputEl} id="search__input" value={addr} onChange={captureAddress}
+            <input id="search__input" value={addr} onChange={captureAddress}
                 className="search__input"
                 type="text" placeholder="Street, City, State and/or Zip"/>
             <button className="search__button" disabled={!addr|| isLoading}>Search</button>
