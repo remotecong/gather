@@ -1,9 +1,50 @@
 import React from 'react';
 import Search from './search';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
+import { css } from 'glamor';
 import * as Sentry from '@sentry/browser';
-import {timedEvent} from './logger.js';
-import './search.component.css';
+import { timedEvent } from './logger.js';
+
+const styles = {
+    button: css(
+        {
+            '-webkit-appearance': 'none',
+            background: 'springgreen',
+            border: 'none',
+            borderRadius: 10,
+            fontSize: '1rem',
+            fontWeight: 'bold',
+            padding: '.75rem',
+            ':disabled': {
+                background: '#ccc',
+            },
+            '@media (min-width: 1050px)': {
+                padding: '1rem',
+            }
+        }
+    ),
+    input: css(
+        {
+            '-webkit-appearance': 'none',
+            borderColor: '#dbdbdb',
+            borderRadius: 4,
+            boxShadow: 'inset 0 1px 2px rgba(10,10,10,.1)',
+            display: 'block',
+            fontSize: '1rem',
+            justifyContent: 'flex-start',
+            lineHeight: 1.5,
+            margin: '0.5rem 0',
+            maxWidth: '100%',
+            padding: 'calc(.375em - 1px) calc(.625em - 1px)',
+            position: 'relative',
+            verticalAlign: 'top',
+            width: '100%',
+            '@media (min-width: 1050px)': {
+                fontSize: '1.25rem',
+            }
+        }
+    ),
+};
 
 export const SearchComponent = ({
     isLoading,
@@ -62,17 +103,15 @@ export const SearchComponent = ({
     const captureAddress = ({currentTarget}) => setAddr(currentTarget.value);
 
     return (
-        <form className="search" onSubmit={onSearch}>
-            <input id="search__input" value={addr} onChange={captureAddress}
-                className="search__input"
-                type="text" placeholder="Street, City, State and/or Zip"/>
-            <button className="search__button" disabled={!addr|| isLoading}>Search</button>
+        <form onSubmit={onSearch}>
+            <input {...styles.input} value={addr} onChange={captureAddress} placeholder="Street, City, State and/or Zip"/>
+            <button {...styles.button} disabled={!addr|| isLoading}>Search</button>
         </form>
     );
 }
 
-export default connect(state => ({
-    isLoading: state.isLoading
+export default connect(({ isLoading }) => ({
+    isLoading,
 }), dispatch => ({
     loadStarted: () => dispatch({type: 'loading'}),
     loadFinished: value => dispatch({type: 'results', value}),

@@ -5,6 +5,7 @@
   "homepage": "http://gather.dillonchristensen.com/",
   "dependencies": {
     "@sentry/browser": "^5.7.0",
+    "glamor": "^2.20.40",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-redux": "^5.0.7",
