@@ -3,12 +3,14 @@ import { useSearch } from "useSearch";
 import styled from "styled-components";
 import SearchComponent from "components/SearchComponent";
 import OwnerInfoComponent from "components/OwnerInfoComponent";
+import ErrorMessageComponent from "components/ErrorMessageComponent";
 
 function App() {
-  const { loading, search, results } = useSearch();
+  const { loading, search, results, error, clearError } = useSearch();
 
   return (
     <Container>
+      {error && <ErrorMessageComponent error={error} onDismiss={clearError} />}
       <Title>
         <Logo src="logo.gif" alt="Gather Logo" /> Gather
       </Title>
