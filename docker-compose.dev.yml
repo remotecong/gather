@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 
 services:
   ui:
@@ -8,7 +8,6 @@ services:
     volumes:
       - .:/code/
       - /code/node_modules/
-    environment:
-      - REACT_APP_API_URL=http://localhost:7712
+    env_file: .env
     ports:
       - 7703:3000
