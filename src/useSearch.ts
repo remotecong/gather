@@ -37,9 +37,9 @@ export function useSearch() {
             throw new Error(data.error);
         }
       }
-      setState({ ...state, results: data, loading: false });
+      setState({ ...state, results: data, error: null, loading: false });
     } catch (err) {
-      setState({ ...state, error: err, loading: false });
+      setState({ ...state, error: err, results: null, loading: false });
     }
   }
 
