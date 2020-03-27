@@ -43,6 +43,7 @@ function SearchComponent({ loading, onSearch }: Props) {
       <Input
         value={addr}
         onChange={captureAddress}
+        onPaste={e => e.preventDefault()}
         placeholder="Street, City, State and/or Zip"
       />
       <Button disabled={!addr || loading}>Search</Button>
