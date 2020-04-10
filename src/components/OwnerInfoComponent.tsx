@@ -55,8 +55,7 @@ const renderMobileIcon = () => (
 export interface OwnerData {
   phones: PhoneNumberRecord[];
   livesThere: boolean;
-  rawName: string;
-  name: string;
+  ownerName: string;
   thatsThemUrl: string;
 }
 
@@ -74,7 +73,7 @@ const OwnerInfoComponent = ({
   if (owner) {
     return (
       <Container>
-        <OwnerName title={owner.rawName}>{owner.name}</OwnerName>
+        <OwnerName>{owner.ownerName}</OwnerName>
         <LivesThereComponent livesThere={owner.livesThere} />
         {!owner.phones.length && (
           <PhoneNumber>No numbers found for address</PhoneNumber>

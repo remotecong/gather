@@ -10,14 +10,14 @@ interface State {
 const initialState: State = {
   loading: false,
   error: null,
-  results: null
+  results: null,
 };
 
 export function useSearch() {
   const [state, setState] = useState(initialState);
 
   async function search(address: string) {
-    setState({ ...state, loading: true, error: null, results: null });
+    setState({ loading: true, error: null, results: null });
     try {
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}?address=${encodeURIComponent(
@@ -33,13 +33,13 @@ export function useSearch() {
             throw new Error("Address could not be interpreted");
 
           default:
-            console.error('Unexpected error', data);
+            console.error("Unexpected error", data);
             throw new Error(data.error);
         }
       }
-      setState({ ...state, results: data, loading: false });
+      setState({ error: null, results: data, loading: false });
     } catch (err) {
-      setState({ ...state, error: err, loading: false });
+      setState({ error: err, results: null, loading: false });
     }
   }
 
@@ -50,6 +50,6 @@ export function useSearch() {
     error: state.error,
     results: state.results,
     search,
-    clearError
+    clearError,
   };
 }
