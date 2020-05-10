@@ -2,7 +2,7 @@ import React from "react";
 import { useSearch } from "useSearch";
 import styled from "styled-components";
 import SearchComponent from "components/SearchComponent";
-import OwnerInfoComponent from "components/OwnerInfoComponent";
+import ResidentInfoComponent from "components/ResidentInfoComponent";
 import ErrorMessageComponent from "components/ErrorMessageComponent";
 
 function App() {
@@ -15,10 +15,10 @@ function App() {
         <Logo src="logo.gif" alt="Gather Logo" /> Gather
       </Title>
       <About>
-        Reverse address lookup for finding owners and their phone numbers
+        Reverse address lookup for finding residents and their phone numbers
       </About>
       <SearchComponent loading={loading} onSearch={search} />
-      <OwnerInfoComponent loading={loading} owner={results} />
+      <ResidentInfoComponent loading={loading} resident={results} />
     </Container>
   );
 }
