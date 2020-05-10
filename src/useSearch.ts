@@ -1,16 +1,16 @@
 import { useState } from "react";
-import { OwnerData } from "components/OwnerInfoComponent";
+import { ResidentData } from "components/ResidentInfoComponent";
 
 interface State {
   loading: boolean;
   error: Error | null;
-  results: OwnerData | null;
+  results: ResidentData | null;
 }
 
 const initialState: State = {
   loading: false,
   error: null,
-  results: null,
+  results: null
 };
 
 export function useSearch() {
@@ -50,6 +50,6 @@ export function useSearch() {
     error: state.error,
     results: state.results,
     search,
-    clearError,
+    clearError
   };
 }

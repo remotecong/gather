@@ -1,38 +1,25 @@
 import React from "react";
-import { IconX, IconCheckmark } from "components/icons";
 import LoadingIndicatorComponent from "components/LoadindIndicatorComponent";
 import styled from "styled-components";
 
-function LivesThereComponent({ livesThere }: { livesThere: boolean }) {
-  return (
-    <LivesThereState>
-      {livesThere ? <IconCheckmark /> : <IconX />}{" "}
-      {livesThere ? "Lives there" : "Does not live there"}
-    </LivesThereState>
-  );
-}
-
+type PhoneNumberType = "mobile" | "landline";
 interface PhoneNumberRecord {
-  isMobile: boolean;
+  type: PhoneNumberType;
   number: string;
-  name: string;
 }
 
 function PhoneNumberComponent({
   p,
   i,
-  len,
-  showName
+  len
 }: {
   p: PhoneNumberRecord;
   i: number;
   len: number;
-  showName: boolean;
 }) {
   return (
     <PhoneNumber>
-      {p.isMobile ? renderMobileIcon() : renderLandlineIcon()}
-      {!!showName && `${p.name} - `}
+      {p.type === "mobile" ? renderMobileIcon() : renderLandlineIcon()}
       {p.number}
       {i + 1 !== len && ", "}
     </PhoneNumber>
@@ -52,46 +39,36 @@ const renderMobileIcon = () => (
   </PhoneIcon>
 );
 
-export interface OwnerData {
+export interface ResidentData {
   phones: PhoneNumberRecord[];
-  livesThere: boolean;
-  ownerName: string;
+  name: string;
   thatsThemUrl: string;
 }
 
-const OwnerInfoComponent = ({
-  owner,
+const ResidentInfoComponent = ({
+  resident,
   loading
 }: {
-  owner: OwnerData | null;
+  resident: ResidentData | null;
   loading: boolean;
 }) => {
   if (loading) {
     return <LoadingIndicatorComponent />;
   }
 
-  if (owner) {
+  if (resident) {
     return (
       <Container>
-        <OwnerName>{owner.ownerName}</OwnerName>
-        <LivesThereComponent livesThere={owner.livesThere} />
-        {!owner.phones.length && (
+        <ResidentName>{resident.name}</ResidentName>
+        {!resident.phones.length && (
           <PhoneNumber>No numbers found for address</PhoneNumber>
         )}
-        {owner.phones
-          //.sort((a, b) => a.isMobile - b.isMobile)
-          .map((p, i, a) => (
-            <PhoneNumberComponent
-              key={i}
-              p={p}
-              i={i}
-              len={a.length}
-              showName={!owner.livesThere}
-            />
-          ))}
+        {resident.phones.map((p, i, a) => (
+          <PhoneNumberComponent key={i} p={p} i={i} len={a.length} />
+        ))}
         <p>
           <ThatsThemLink
-            href={owner.thatsThemUrl}
+            href={resident.thatsThemUrl}
             rel="noopener noreferrer"
             target="_blank"
           >
@@ -110,16 +87,12 @@ const Container = styled.div`
   margin-top: 2rem;
   padding-top: 2rem;
 `;
-const OwnerName = styled.p`
+const ResidentName = styled.p`
   font-size: 1.5rem;
   margin: 0;
   @media (min-width: 1050px) {
     font-size: 2rem;
   }
-`;
-const LivesThereState = styled.p`
-  align-items: center;
-  display: flex;
 `;
 const PhoneIcon = styled.svg`
   height: 1.5rem;
@@ -147,4 +120,4 @@ const ThatsThemLink = styled.a`
   }
 `;
 
-export default OwnerInfoComponent;
+export default ResidentInfoComponent;
